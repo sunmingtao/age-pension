@@ -1,16 +1,18 @@
 <template>
   <div id="app">
-    <HelloWorld msg="Age Pension Calculator"/>
+    <app-header></app-header>
+    <router-view></router-view>
   </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+
+import Header from './components/Header.vue'
 
 export default {
   name: 'app',
   components: {
-    HelloWorld
+    'app-header': Header
   }
 }
 </script>
