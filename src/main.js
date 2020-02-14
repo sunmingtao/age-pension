@@ -2,7 +2,7 @@ import Vue from 'vue'
 import App from './App.vue'
 import VueResource from 'vue-resource';
 import VueRouter from 'vue-router';
-import Home from './components/HelloWorld.vue'
+import Home from './components/Home.vue'
 import Admin from './components/Admin.vue'
 
 Vue.use(VueResource);
