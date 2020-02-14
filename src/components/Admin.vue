@@ -7,10 +7,18 @@
                     <div class="form-row col-md-12">
                         <h3>Foreign currency exchange rate</h3>
                     </div>
-                    <div class="form-row">
-                        <label for="currency-cny" class="col-md-4 control-label">CNY</label>
+                    <div class="form-row" v-for="currency in Object.keys(currencyReferenceData)" :key="currency">
+                        <label :for="'currency-'+currency" class="col-md-4 control-label">{{currency | toUpperCase}}</label>
                         <div class="form-group col-md-6">
-                            <input step="any" id="currency-cny" type="number" v-model.number="currencyReferenceData.cny" class="form-control" @keypress="isNumber($event)">
+                            <input step="any" :id="'currency-'+currency" type="number" v-model.number="currencyReferenceData[currency]" class="form-control" @keypress="isNumber($event)">
+                        </div>
+                    </div>
+                    <div class="form-row col-md-12">
+                        <div class="col-md-4 col-md-offset-2">
+                            <input v-model="newCurrency" class="form-control" placeholder="new currency code">
+                        </div>
+                        <div class="col-md-6">
+                            <button class="btn btn-primary" @click.prevent="addCurrency" :disabled="disableAddNewCurrencyButton">Add more currency</button>
                         </div>
                     </div>
                     <div class="form-row col-md-12">
@@ -80,12 +88,24 @@
 
     export default {
         mixins: [myMixin],
+        data(){
+            return {
+                newCurrency: '',
+            }
+        },
+        computed: {
+            disableAddNewCurrencyButton() {
+                if (!this.newCurrency || Object.keys(this.currencyReferenceData).includes(this.newCurrency.toLowerCase())) {
+                    return true;
+                }
+                return false;
+            }
+        },
         methods: {
             saveReferenceData(){
                 const data = {};
                 data.pension = this.pensionReferenceData;
                 data.currency = this.currencyReferenceData;
-                data.currency['usd'] = 0.7;
                 this.$http.put('https://age-pension.firebaseio.com/refData.json', data)
                     .then(response => {
                         if (response.status == '200') {
@@ -95,6 +115,10 @@
                         console.log(error);
                         alert('Error!');
                     });
+            },
+            addCurrency() {
+                this.$set(this.currencyReferenceData, this.newCurrency.toLowerCase(), 1);
+                this.newCurrency = '';
             }
         },
         beforeMount: function(){

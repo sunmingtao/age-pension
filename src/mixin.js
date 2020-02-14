@@ -1,6 +1,7 @@
 export default {
     data(){
         return {
+            currencies: ['aud'],
             pensionReferenceData: {
                 incomeLimit: {
                     single: 0,
@@ -38,8 +39,18 @@ export default {
                 }).then(data => {
                 this.pensionReferenceData = data.pension;
                 this.currencyReferenceData = data.currency;
+                Array.prototype.push.apply(this.currencies, Object.keys(this.currencyReferenceData));
                 this.isDataFetched = true;
                 });
         },
-    }
+    },
+    filters: {
+        toUpperCase: function (value) {
+          if (value){
+            return value.toUpperCase();
+          }else{
+            return '';
+          }
+        }
+    },
 }

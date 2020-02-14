@@ -20,9 +20,9 @@
           <div class="form-group col-md-3">
               <label for="currency">Currency</label>
               <select id="currency" class="form-control" v-model="selectedCurrency">
-                <option v-for="currency in currencies" :key="currency">{{ currency }}</option>
+                <option v-for="currency in currencies" :key="currency" :value="currency">{{ currency | toUpperCase }}</option>
               </select>
-              <small v-show="selectedCurrency != 'AUD'" class="form-text text-muted">1 AUD = {{this.currencyReferenceData.cny}} CNY</small>
+              <small v-show="selectedCurrency != 'aud'" class="form-text text-muted">1 AUD = {{this.currencyReferenceData[selectedCurrency]}} {{ selectedCurrency | toUpperCase}}</small>
           </div>
         </div>
         <div class="form-group col-md-12">
@@ -77,14 +77,9 @@ export default {
   data(){
     return {
       singleCouple: 'couple',
-      deemedEarningAssetThresholdFor: {
-        single: 51800,
-        couple: 86200,
-      },
       incomeAmount: 0,
       frequency: 'monthly',
-      currencies: ['AUD', 'CNY'],
-      selectedCurrency: 'CNY',
+      selectedCurrency: 'cny',
       investmentPropertyValue: 0,
       savingBalance: 0,
       superBalance: 0,
@@ -107,6 +102,13 @@ export default {
           minimumFractionDigits: 0
       });
       return formatter.format(value);
+    },
+    toUpperCase: function (value) {
+      if (value){
+        return value.toUpperCase();
+      }else{
+        return '';
+      }
     }
   },
   computed: {
@@ -129,8 +131,8 @@ export default {
       if (this.frequency == 'monthly') {
         fortnightlyIncome = fortnightlyIncome * 12 / 26;
       }
-      if (this.selectedCurrency == 'CNY') {
-        fortnightlyIncome = fortnightlyIncome / this.currencyReferenceData.cny;
+      if (this.selectedCurrency != 'aud') {
+        fortnightlyIncome = fortnightlyIncome / this.currencyReferenceData[this.selectedCurrency];
       }
       return fortnightlyIncome.toFixed(2) * 1;
     },
