@@ -18,7 +18,7 @@
                             <input v-model="newCurrency" class="form-control" placeholder="new currency code">
                         </div>
                         <div class="col-md-6">
-                            <button class="btn btn-primary" @click.prevent="addCurrency" :disabled="disableAddNewCurrencyButton">Add more currency</button>
+                            <button class="btn btn-primary" @click.prevent="addCurrency" :disabled="disableAddNewCurrencyButton">Add new currency</button>
                         </div>
                     </div>
                     <div class="form-row col-md-12">
