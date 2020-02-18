@@ -33,7 +33,7 @@ export default {
             }
         },
         fetchReferenceData(){
-            this.$http.get('https://age-pension.firebaseio.com/refData.json')
+            this.$http.get('')
                 .then(response => {
                 return response.json();
                 }).then(data => {

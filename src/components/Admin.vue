@@ -5,6 +5,7 @@
                 
                 <form class="form-horizontal">
                     <div class="form-row col-md-12">
+                        <h4>Hello! {{userEmail}} </h4>
                         <h3>Foreign currency exchange rate</h3>
                     </div>
                     <div class="form-row" v-for="currency in Object.keys(currencyReferenceData)" :key="currency">
@@ -99,6 +100,10 @@
                     return true;
                 }
                 return false;
+            },
+            userEmail() {
+                console.log("userEmail="+this.$store.state.userEmail);
+                return this.$store.state.userEmail;
             }
         },
         methods: {
@@ -106,14 +111,14 @@
                 const data = {};
                 data.pension = this.pensionReferenceData;
                 data.currency = this.currencyReferenceData;
-                this.$http.put('https://age-pension.firebaseio.com/refData.json', data)
+                this.$http.put('?auth=' + this.$store.state.idToken, data)
                     .then(response => {
                         if (response.status == '200') {
                             alert('Data saved successfully');
                         }
                     }, error => {
                         console.log(error);
-                        alert('Error!');
+                        alert('Error! reason: '+error.statusText);
                     });
             },
             addCurrency() {
@@ -133,7 +138,7 @@
     display: inline;
   }
 
-  h3 {
+  h3, h4{
       text-align: center;
   }
 

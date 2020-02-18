@@ -8,10 +8,28 @@
         <li>
           <router-link to="/admin">Admin</router-link>
         </li>
+        <li v-if="auth">
+          <button @click="onLogout" class="logout">Logout</button>
+        </li>
       </ul>
     </nav>
   </header>
 </template>
+
+<script>
+  export default {
+    computed: {
+      auth () {
+        return this.$store.state.idToken;
+      }
+    },
+    methods: {
+      onLogout() {
+        this.$store.dispatch('logout')
+      }
+    }
+  }
+</script>
 
 <style scoped>
   #header {
@@ -61,5 +79,13 @@
   li a:active,
   li a.router-link-active {
     color: #fa923f;
+  }
+
+  .logout {
+    background-color: transparent;
+    border: none;
+    font: inherit;
+    color: white;
+    cursor: pointer;
   }
 </style>
